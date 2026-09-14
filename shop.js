@@ -6,7 +6,7 @@
 (() => {
   'use strict';
   const BUSINESS = Object.freeze({ whatsappNumber: '256703149773' });
-  const DADDIES_PRICES = Object.freeze({ '500g': 5000, '1 kg': 1000, '2 kg': 22000, '2.5 kg': 30000 });
+  const DADDIES_PRICES = Object.freeze({ '500g': 5000, '1 kg': 10000, '2 kg': 22000, '2.5 kg': 30000 });
   const SIZES = Object.freeze(['500g', '1 kg', '2 kg', '2.5 kg']);
   const PRODUCTS = Object.freeze({
     vanilla: { name: 'Vanilla Daddies', image: 'assets/vanilla-daddies.webp', sizes: SIZES, prices: DADDIES_PRICES },
