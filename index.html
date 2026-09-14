@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#5b1b25">
+  <title>Hillary's Snack Corner — A little bite. A whole lot of happy.</title>
+  <meta name="description" content="Meet your next snack obsession: vanilla and strawberry Daddies, and crunchy Hard Corns. Choose your packs, build an order, and arrange delivery at Hillary's Snack Corner.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%235b1b25'/%3E%3Ctext x='32' y='47' text-anchor='middle' font-family='Georgia' font-weight='bold' font-size='47' fill='%23ffb741'%3EH%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="assets/fonts.css">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preload" as="image" href="assets/vanilla-daddies.webp" fetchpriority="high">
+  <script src="shop.js" defer></script>
+</head>
+<body>
+  <svg class="icon-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+    <symbol id="i-bag" viewBox="0 0 24 24"><path d="M5 7h14l1 14H4L5 7Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></symbol>
+    <symbol id="i-truck" viewBox="0 0 24 24"><path d="M1 4h13v13H1zM14 9h4l4 5v3h-8M14 14h8"/><circle cx="6" cy="18" r="2"/><circle cx="18" cy="18" r="2"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+    <symbol id="i-tag" viewBox="0 0 24 24"><path d="M3 3h8l10 10-8 8L3 11V3Z"/><circle cx="7.5" cy="7.5" r=".8"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="13" rx="2"/><path d="M15 8V3H3v13h5"/></symbol>
+    <symbol id="i-share" viewBox="0 0 24 24"><path d="M12 16V3m-4 4 4-4 4 4M5 13v8h14v-8"/></symbol>
+  </svg>
+  <a class="skip-link" href="#main">Skip to snacks</a>
+  <div class="announcement"><span>GOOD SNACKS. GREAT MOODS.</span><span><svg class="icon"><use href="#i-truck"/></svg>Delivery available <span class="announcement-divider">·</span> Discounts on orders</span></div>
+  <header class="header">
+    <nav class="nav wrap" aria-label="Main navigation">
+      <a class="brand" href="#" aria-label="Hillary's Snack Corner home"><span class="brand-mark" aria-hidden="true">h.</span><span class="brand-words"><strong>Hillary’s</strong><span>SNACK CORNER</span></span></a>
+      <div class="nav-links"><a href="#snacks">Our snacks</a><a href="#packs">Pick your pack</a><a href="#delivery">Delivery &amp; offers</a></div>
+      <button class="bag-button" data-open-order><svg class="icon"><use href="#i-bag"/></svg><span>Your order</span><span class="bag-count" aria-label="0 items">0</span></button>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero wrap" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="mini-star" aria-hidden="true">✳</span> YOUR EVERYDAY HAPPY HANDFUL</p>
+        <h1 id="hero-title">A little bite.<br>A <span class="italic-word">whole lot</span><br>of <span class="happy-word">happy.</span></h1>
+        <p class="hero-description">Sweet Daddies. Crunchy Hard Corns.<br>Big smiles, one handful at a time.</p>
+        <div class="hero-actions"><a class="button button-dark" href="#snacks">Find your flavour <svg class="icon"><use href="#i-arrow"/></svg></a><button class="text-button" data-open-order>Build an order</button></div>
+        <div class="hero-footnote"><span>2 SNACK FAVOURITES</span><span class="tiny-cross" aria-hidden="true">✳</span><span>ENDLESS SNACK MOMENTS</span></div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-photo"><img src="assets/vanilla-daddies.webp" alt="Illustrative golden, bite-sized Daddies piled in a burgundy bowl on a bright orange background" width="1536" height="1024" fetchpriority="high"><span class="photo-label">THE LITTLE CUBES OF JOY.</span></div>
+        <div class="hero-sticker"><span>JUST ONE<br>MORE<br><strong>handful.</strong></span></div>
+        <a href="#snacks" class="hero-caption"><span><small>MEET YOUR NEW FAVOURITE</small><strong>Vanilla Daddies</strong></span><span class="round-arrow"><svg class="icon"><use href="#i-arrow"/></svg></span></a>
+      </div>
+    </section>
+
+    <div class="flavour-strip" aria-hidden="true"><div>BIG ON CRUNCH <span>✳</span> BIG ON FLAVOUR <span>✳</span> LITTLE BITES OF JOY <span>✳</span> BIG ON CRUNCH <span>✳</span> BIG ON FLAVOUR <span>✳</span></div></div>
+
+    <section class="snacks-section wrap section-space" id="snacks" aria-labelledby="snacks-title">
+      <div class="section-heading"><div><p class="eyebrow">THE SNACK LINE-UP</p><h2 id="snacks-title">Pick your <span class="italic-word">happy.</span></h2></div><p>Something sweet. Something crunchy.<br>Something you’ll want to share. Maybe.</p></div>
+      <div class="product-grid">
+        <article class="product-card vanilla-card" data-product="vanilla">
+          <div class="product-image"><span class="product-tag">THE CLASSIC CRUNCH</span><img src="assets/vanilla-daddies.webp" alt="Illustrative vanilla Daddies: golden fried dough cubes in a bowl" width="1536" height="1024" loading="lazy" decoding="async"></div>
+          <div class="product-content"><p class="product-family">DADDIES / 01</p><h3>Very vanilla.</h3><p class="product-description">Golden little bites with a sweet vanilla flavour. A classic for your snack stash.</p><fieldset class="size-picker"><legend>Choose your pack</legend><label><input type="radio" name="vanilla-size" value="500g" checked><span>500g</span></label><label><input type="radio" name="vanilla-size" value="1 kg"><span>1 kg</span></label><label><input type="radio" name="vanilla-size" value="2 kg"><span>2 kg</span></label><label><input type="radio" name="vanilla-size" value="2.5 kg"><span>2.5 kg</span></label></fieldset><div class="product-bottom"><span class="product-price" data-price-for="vanilla">500g · UGX 5,000</span><button class="add-button" data-add="vanilla">Add to order <svg class="icon"><use href="#i-plus"/></svg></button></div></div>
+        </article>
+        <article class="product-card strawberry-card" data-product="strawberry">
+          <div class="product-image"><span class="product-tag">A BERRY HAPPY BITE</span><img src="assets/strawberry-daddies.webp" alt="Illustrative strawberry-flavoured golden Daddies styled with strawberries on a pink background" width="1536" height="1024" loading="lazy" decoding="async"></div>
+          <div class="product-content"><p class="product-family">DADDIES / 02</p><h3>So strawberry.</h3><p class="product-description">That familiar Daddies crunch, with a playful strawberry-flavoured twist.</p><fieldset class="size-picker"><legend>Choose your pack</legend><label><input type="radio" name="strawberry-size" value="500g" checked><span>500g</span></label><label><input type="radio" name="strawberry-size" value="1 kg"><span>1 kg</span></label><label><input type="radio" name="strawberry-size" value="2 kg"><span>2 kg</span></label><label><input type="radio" name="strawberry-size" value="2.5 kg"><span>2.5 kg</span></label></fieldset><div class="product-bottom"><span class="product-price" data-price-for="strawberry">500g · UGX 5,000</span><button class="add-button" data-add="strawberry">Add to order <svg class="icon"><use href="#i-plus"/></svg></button></div></div>
+        </article>
+        <article class="product-card corn-card" data-product="corn">
+          <div class="product-image"><span class="product-tag">BRING ON THE CRUNCH</span><img src="assets/hard-corns.webp" alt="Illustrative crispy golden whole maize kernels in a burgundy bowl on a yellow background" width="1536" height="1024" loading="lazy" decoding="async"></div>
+          <div class="product-content"><p class="product-family">HARD CORNS / 03</p><h3>Uncorn­promising.</h3><p class="product-description">Big crunch in every little kernel. Meet the other half of your snack obsession.</p><div class="corn-size"><span class="field-label">Make it your kind of handful</span><p>Tell us the quantity you’d like.<br>Pack sizes confirmed with your quote.</p></div><div class="product-bottom"><span>Price on request</span><button class="add-button" data-add="corn">Add to order <svg class="icon"><use href="#i-plus"/></svg></button></div></div>
+        </article>
+      </div>
+      <p class="image-note">Food images are illustrative. Actual products and presentation may vary.</p>
+    </section>
+
+    <section class="packs-section" id="packs" aria-labelledby="packs-title"><div class="wrap packs-layout">
+      <div class="packs-copy"><p class="eyebrow">YOUR CRAVING. YOUR SIZE.</p><h2 id="packs-title">A little for you.<br><span class="italic-word">A lot for everyone.</span></h2><p>From your own snack stash to a table full of friends, there’s a Daddies pack for the moment.</p><p class="flavour-note">Every size. Both flavours.<br><strong>Vanilla &amp; strawberry.</strong></p></div>
+      <div class="pack-grid" role="group" aria-label="Choose a Daddies pack size">
+        <button class="pack-tile" data-pack="500g"><span class="pack-number">01</span><strong>500<span>g</span></strong><span class="pack-name">The little treat</span><span class="pack-price">UGX 5,000</span><span class="pack-link">Choose flavour <svg class="icon"><use href="#i-arrow"/></svg></span></button>
+        <button class="pack-tile" data-pack="1 kg"><span class="pack-number">02</span><strong>1<span>kg</span></strong><span class="pack-name">The snack stash</span><span class="pack-price">UGX 1,000</span><span class="pack-link">Choose flavour <svg class="icon"><use href="#i-arrow"/></svg></span></button>
+        <button class="pack-tile" data-pack="2 kg"><span class="pack-number">03</span><strong>2<span>kg</span></strong><span class="pack-name">The share-around</span><span class="pack-price">UGX 22,000</span><span class="pack-link">Choose flavour <svg class="icon"><use href="#i-arrow"/></svg></span></button>
+        <button class="pack-tile" data-pack="2.5 kg"><span class="pack-number">04</span><strong>2.5<span>kg</span></strong><span class="pack-name">The big get-together</span><span class="pack-price">UGX 30,000</span><span class="pack-link">Choose flavour <svg class="icon"><use href="#i-arrow"/></svg></span></button>
+      </div>
+    </div></section>
+
+    <section class="delivery-section wrap section-space" id="delivery" aria-labelledby="delivery-title">
+      <div class="section-heading"><div><p class="eyebrow">SNACK PLANS? SORTED.</p><h2 id="delivery-title">Good things.<br><span class="italic-word">Coming your way.</span></h2></div><p>Your movie nights, office breaks and<br>get-togethers deserve a good snack.</p></div>
+      <div class="offer-grid"><article class="offer-card delivery-card"><div class="offer-icon"><svg class="icon"><use href="#i-truck"/></svg></div><div><p class="eyebrow">LESS RUNNING AROUND</p><h3>We deliver the joy.</h3><p>Add your delivery location to your order request. We’ll confirm availability, the delivery fee and timing before you commit.</p><button class="text-button" data-order-delivery>Plan a delivery <svg class="icon"><use href="#i-arrow"/></svg></button></div></article>
+      <article class="offer-card discounts-card"><div class="offer-icon"><svg class="icon"><use href="#i-tag"/></svg></div><div><p class="eyebrow">SIMPLE PRICES FOR NOW</p><h3>Discounts are paused.</h3><p>We’re keeping the current pack prices simple for now. We’ll add offers here when discounts become available.</p></div></article></div>
+      <div class="order-steps"><div><span>01</span><p><strong>Pick your favourites</strong>Choose your snacks, sizes and quantities.</p></div><div><span>02</span><p><strong>Build your request</strong>Add delivery details and your location.</p></div><div><span>03</span><p><strong>Share &amp; confirm</strong>Share your request to agree delivery and timing.</p></div></div>
+    </section>
+
+    <section class="final-cta"><div class="wrap"><p class="eyebrow">MAKE ROOM FOR A LITTLE HAPPY.</p><h2>Your next handful<br>is calling<span>.</span></h2><button class="button button-light" data-open-order>Let’s build your order <svg class="icon"><use href="#i-arrow"/></svg></button><p>Sweet, crunchy and ready for your snack plans.</p></div><span class="cta-word" aria-hidden="true">CRUNCH.</span></section>
+  </main>
+  <footer class="footer wrap"><a class="brand" href="#" aria-label="Hillary's Snack Corner home"><span class="brand-mark" aria-hidden="true">h.</span><span class="brand-words"><strong>Hillary’s</strong><span>SNACK CORNER</span></span></a><p>A little bite. A whole lot of happy.</p><span>© <span id="year">2026</span> Hillary’s Snack Corner</span></footer>
+
+  <dialog id="order-dialog" class="order-dialog" aria-labelledby="order-title">
+    <div class="drawer-heading"><div><p class="eyebrow">GOOD CHOICES START HERE</p><h2 id="order-title">Your snack order<span>.</span></h2></div><button class="icon-button close-dialog" aria-label="Close order"><svg class="icon"><use href="#i-close"/></svg></button></div>
+    <div class="drawer-body"><p class="order-intro">Build a request, then share it with Hillary’s Snack Corner for your final quote.</p><div id="cart-items" aria-live="polite"></div><button class="text-button add-more" id="add-more">+ Explore more snacks</button>
+      <form id="order-form">
+        <div id="order-details" hidden>
+          <div class="form-heading"><span>THE FINISHING TOUCHES</span><span id="pack-total"></span></div>
+          <label class="form-label" for="customer-name">Your name <span>(optional)</span></label><input class="text-input" id="customer-name" name="name" placeholder="Your name" autocomplete="given-name" maxlength="80">
+          <fieldset class="fulfilment"><legend>How would you like your snacks?</legend><label><input type="radio" name="fulfilment" value="delivery" checked><span><svg class="icon"><use href="#i-truck"/></svg>Delivery</span></label><label><input type="radio" name="fulfilment" value="discuss"><span>Let’s discuss</span></label></fieldset>
+          <div id="location-field"><label class="form-label" for="delivery-location">Delivery area or location <span>(optional)</span></label><input class="text-input" id="delivery-location" name="location" placeholder="e.g. your area and a nearby landmark" autocomplete="address-level2" maxlength="200"></div>
+          <label class="form-label" for="order-notes">Anything else? <span>(optional)</span></label><textarea class="text-input" id="order-notes" rows="3" maxlength="1000" placeholder="Hard Corns quantity, preferred delivery day or special requests…"></textarea>
+          <div class="quote-note"><svg class="icon"><use href="#i-tag"/></svg><p>Daddies prices are shown above. Hard Corns and delivery fees are confirmed in your quote. Discounts are currently paused. Creating a request does not place a confirmed order.</p></div>
+          <button class="button button-dark full-width" type="submit">Create order request <svg class="icon"><use href="#i-arrow"/></svg></button>
+        </div>
+      </form>
+      <section id="request-result" hidden aria-labelledby="result-title"><div class="result-icon"><svg class="icon"><use href="#i-check"/></svg></div><h3 id="result-title" tabindex="-1">Your request is ready.</h3><p id="request-help">It hasn’t been sent yet. Copy or share it with Hillary’s Snack Corner to confirm your quote.</p><label class="form-label" for="order-summary">Order request</label><textarea id="order-summary" class="text-input summary-text" readonly rows="10"></textarea><div class="result-actions"><button class="button button-dark" id="copy-order"><svg class="icon"><use href="#i-copy"/></svg>Copy request</button><button class="button button-outline" id="share-order"><svg class="icon"><use href="#i-share"/></svg>Share</button></div><button class="text-button" id="edit-order">Back to my order</button></section>
+    </div>
+  </dialog>
+  <dialog id="flavour-dialog" class="flavour-dialog" aria-labelledby="flavour-title"><button class="icon-button close-dialog" aria-label="Close flavour selection"><svg class="icon"><use href="#i-close"/></svg></button><p class="eyebrow">ONE PACK. YOUR KIND OF HAPPY.</p><h2 id="flavour-title">Pick a flavour<span>.</span></h2><p id="chosen-pack"></p><div class="flavour-choices"><button data-flavour="vanilla"><img src="assets/vanilla-daddies.webp" alt="" width="200" height="140"><span>Vanilla Daddies <svg class="icon"><use href="#i-plus"/></svg></span></button><button data-flavour="strawberry"><img src="assets/strawberry-daddies.webp" alt="" width="200" height="140"><span>Strawberry Daddies <svg class="icon"><use href="#i-plus"/></svg></span></button></div></dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <noscript><div class="no-script">Explore our snacks above. Please enable JavaScript to choose packs and build an order request.</div></noscript>
+</body>
+</html>
