@@ -1,19 +1,19 @@
-/* Hillary's Snack Corner — plain HTML, CSS and JavaScript.
- * Add the verified business WhatsApp number below, including country code and
- * digits only, to enable direct WhatsApp handoff. No orders are sent by this site.
- * Daddies prices are shown in the catalogue. Hard Corns and delivery fees are quote-based.
+/* Hillary's Snack Corner order flow.
+ * The Confirm Order button opens a prefilled WhatsApp message for the shop.
  */
 (() => {
   'use strict';
   const BUSINESS = Object.freeze({ whatsappNumber: '256703149773' });
-  const DADDIES_PRICES = Object.freeze({ '500g': 5000, '1 kg': 10000, '2 kg': 22000, '2.5 kg': 30000 });
+  const DADDIES_PRICES = Object.freeze({ '500g': 5000, '1 kg': 1000, '2 kg': 22000, '2.5 kg': 30000 });
   const SIZES = Object.freeze(['500g', '1 kg', '2 kg', '2.5 kg']);
   const PRODUCTS = Object.freeze({
     vanilla: { name: 'Vanilla Daddies', image: 'assets/vanilla-daddies.webp', sizes: SIZES, prices: DADDIES_PRICES },
     strawberry: { name: 'Strawberry Daddies', image: 'assets/strawberry-daddies.webp', sizes: SIZES, prices: DADDIES_PRICES },
+    chocolate: { name: 'Chocolate Daddies', image: 'assets/chocolate-daddies.webp', sizes: SIZES, prices: DADDIES_PRICES },
+    lemon: { name: 'Lemon Daddies', image: 'assets/lemon-daddies.webp', sizes: SIZES, prices: DADDIES_PRICES },
     corn: { name: 'Hard Corns', image: 'assets/hard-corns.webp', sizes: ['Pack size to confirm'], prices: {} }
   });
-  // This is a temporary on-page request, not an order database or payment system.
+  // The cart stays in this page and is handed to the shop through WhatsApp.
   const cart = new Map();
   const $ = selector => document.querySelector(selector);
   const $$ = selector => [...document.querySelectorAll(selector)];
@@ -22,7 +22,7 @@
   const cartItems = $('#cart-items');
   let selectedPack = '500g';
   let toastTimer;
-  let requestText = '';
+  let orderMessage = '';
 
   function formatUGX(amount) {
     return amount === undefined ? 'Price on request' : 'UGX ' + amount.toLocaleString('en-UG');
@@ -73,37 +73,36 @@
     return [...cart.values()].reduce((total, item) => total + item.quantity, 0);
   }
 
-  function editRequest() {
+  function resetOrderView() {
     $('#request-result').hidden = true;
     $('#order-form').hidden = false;
     cartItems.hidden = false;
     $('#add-more').hidden = false;
     $('.order-intro').hidden = false;
     $('#order-details').hidden = cart.size === 0;
-    requestText = '';
+    orderMessage = '';
   }
 
   function snapshot() {
     return {
       items: [...cart.values()].map(item => ({ ...item, name: PRODUCTS[item.product].name, priceUGX: itemPrice(item.product, item.size) ?? null })),
-      totalRequestedPacks: totalCount(),
-      status: 'draft_request_not_sent',
-      pricing: 'Daddies prices are listed. Hard Corns and delivery fees require a quote. Discounts are currently paused.'
+      totalPacks: totalCount(),
+      status: 'draft_order'
     };
   }
 
   function renderCart() {
-    editRequest();
+    resetOrderView();
     const count = totalCount();
     $$('.bag-count').forEach(badge => {
       badge.textContent = String(count);
-      badge.setAttribute('aria-label', count + ' requested ' + (count === 1 ? 'pack' : 'packs'));
+      badge.setAttribute('aria-label', count + ' ' + (count === 1 ? 'pack' : 'packs') + ' in order');
     });
-    $('#pack-total').textContent = count + ' requested ' + (count === 1 ? 'pack' : 'packs');
+    $('#pack-total').textContent = count + ' ' + (count === 1 ? 'pack' : 'packs') + ' in your order';
     cartItems.replaceChildren();
     if (!cart.size) {
       const empty = node('div', 'empty-cart');
-      empty.append(icon('bag'), node('h3', '', 'A little empty. For now.'), node('p', '', 'Pick a snack and pack size to start your request.'));
+      empty.append(icon('bag'), node('h3', '', 'A little empty. For now.'), node('p', '', 'Choose a snack and pack size to start your order.'));
       cartItems.append(empty);
       return;
     }
@@ -150,9 +149,9 @@
         const total = totalCount();
         $$('.bag-count').forEach(badge => {
           badge.textContent = String(total);
-          badge.setAttribute('aria-label', total + ' requested ' + (total === 1 ? 'pack' : 'packs'));
+          badge.setAttribute('aria-label', total + ' ' + (total === 1 ? 'pack' : 'packs') + ' in order');
         });
-        $('#pack-total').textContent = total + ' requested ' + (total === 1 ? 'pack' : 'packs');
+        $('#pack-total').textContent = total + ' ' + (total === 1 ? 'pack' : 'packs') + ' in your order';
       }
       minus.addEventListener('click', () => changeQuantity(-1));
       plus.addEventListener('click', () => changeQuantity(1));
@@ -164,7 +163,7 @@
 
   function validateItem(item) {
     if (!item || typeof item !== 'object' || Array.isArray(item)) throw new Error('Each item must be an object.');
-    if (!Object.hasOwn(PRODUCTS, item.product)) throw new Error('Choose vanilla, strawberry or corn.');
+    if (!Object.hasOwn(PRODUCTS, item.product)) throw new Error('Choose vanilla, strawberry, chocolate, lemon or corn.');
     if (!PRODUCTS[item.product].sizes.includes(item.size)) throw new Error('Choose an available pack size.');
     if (!Number.isInteger(item.quantity) || item.quantity < 1 || item.quantity > 99) throw new Error('Quantity must be a whole number from 1 to 99.');
     return { product: item.product, size: item.size, quantity: item.quantity };
@@ -178,7 +177,7 @@
     for (const item of validated) {
       const key = item.product + '|' + item.size;
       const quantity = (next.get(key)?.quantity || 0) + item.quantity;
-      if (quantity > 99) throw new Error('The maximum is 99 packs per flavour and size. Describe a larger order in the notes.');
+      if (quantity > 99) throw new Error('The maximum is 99 packs per flavour and size. Add any larger quantity in the notes.');
       next.set(key, { ...item, quantity });
     }
     cart.clear();
@@ -190,7 +189,8 @@
   function addOne(product, size) {
     try {
       addItems([{ product, size, quantity: 1 }]);
-      notify(PRODUCTS[product].name + ' added · ' + totalCount() + ' in your order');
+      const count = totalCount();
+      notify(PRODUCTS[product].name + ' added · ' + count + ' ' + (count === 1 ? 'pack' : 'packs') + ' in your order');
     } catch (error) {
       notify(error.message);
     }
@@ -201,8 +201,8 @@
     openDialog(orderDialog);
   }
 
-  function buildRequestText() {
-    const lines = ["HILLARY'S SNACK CORNER", 'Order request — please provide a quote', ''];
+  function buildOrderMessage() {
+    const lines = ["HILLARY'S SNACK CORNER", 'Order details', ''];
     const name = $('#customer-name').value.trim();
     if (name) lines.push('Name: ' + name, '');
     for (const item of cart.values()) {
@@ -218,36 +218,20 @@
     }
     const notes = $('#order-notes').value.trim();
     if (notes) lines.push('', 'Additional requests: ' + notes);
-    lines.push('', 'Please confirm availability, Hard Corns pricing, delivery fee and timing.', 'Discounts are currently paused.', 'This is a request for a quote, not a confirmed order.');
     return lines.join('\n');
   }
 
-  function createRequest() {
-    if (!cart.size) throw new Error('Add at least one snack to your request.');
-    requestText = buildRequestText();
-    $('#order-summary').value = requestText;
+  function prepareOrder() {
+    if (!cart.size) throw new Error('Add at least one snack to your order.');
+    orderMessage = buildOrderMessage();
+    $('#order-summary').value = orderMessage;
     $('#order-form').hidden = true;
     cartItems.hidden = true;
     $('#add-more').hidden = true;
     $('.order-intro').hidden = true;
     $('#request-result').hidden = false;
     $('#result-title').focus();
-    return { text: requestText, status: 'request_prepared_not_sent' };
-  }
-
-  async function copyRequest() {
-    if (!requestText) return;
-    try {
-      if (!navigator.clipboard?.writeText) throw new Error('Clipboard unavailable');
-      await navigator.clipboard.writeText(requestText);
-      notify('Request copied. Share it with Hillary’s Snack Corner.');
-    } catch {
-      const summary = $('#order-summary');
-      summary.focus();
-      summary.select();
-      summary.setSelectionRange(0, summary.value.length);
-      notify('Request selected. Use your device’s Copy command.');
-    }
+    return { text: orderMessage, status: 'ready_to_confirm' };
   }
 
   $$('.close-dialog').forEach(button => button.addEventListener('click', () => button.closest('dialog').close()));
@@ -293,32 +277,22 @@
   }));
   $('#order-form').addEventListener('submit', event => {
     event.preventDefault();
-    try { createRequest(); } catch (error) { notify(error.message); }
+    try { prepareOrder(); } catch (error) { notify(error.message); }
   });
-  $('#edit-order').addEventListener('click', () => { editRequest(); $('#customer-name').focus(); });
-  $('#copy-order').addEventListener('click', copyRequest);
+  $('#edit-order').addEventListener('click', () => { resetOrderView(); $('#customer-name').focus(); });
   const whatsappReady = /^[1-9]\d{7,14}$/.test(BUSINESS.whatsappNumber);
   if (whatsappReady) {
-    $('#share-order').replaceChildren(icon('share'), document.createTextNode('WhatsApp'));
-    $('#request-help').textContent = 'Send it to Hillary’s Snack Corner on WhatsApp to confirm your quote. It hasn’t been sent yet.';
+    $('#request-help').textContent = 'Tap Confirm Order to send these details to Hillary’s Snack Corner on WhatsApp.';
   }
-  $('#share-order').addEventListener('click', async () => {
-    if (!requestText) return;
-    if (whatsappReady) {
-      window.open('https://wa.me/' + BUSINESS.whatsappNumber + '?text=' + encodeURIComponent(requestText), '_blank', 'noopener,noreferrer');
+  $('#share-order').addEventListener('click', () => {
+    if (!orderMessage) return;
+    if (!whatsappReady) {
+      notify('WhatsApp ordering is not available right now.');
       return;
     }
-    if (navigator.share) {
-      try {
-        await navigator.share({ title: "Hillary's Snack Corner — Order request", text: requestText });
-      } catch (error) {
-        if (error.name !== 'AbortError') await copyRequest();
-      }
-    } else {
-      await copyRequest();
-    }
+    window.open('https://wa.me/' + BUSINESS.whatsappNumber + '?text=' + encodeURIComponent(orderMessage), '_blank', 'noopener,noreferrer');
   });
-  $$('input[name="vanilla-size"], input[name="strawberry-size"]').forEach(input => input.addEventListener('change', () => {
+  $$('input[name="vanilla-size"], input[name="strawberry-size"], input[name="chocolate-size"], input[name="lemon-size"]').forEach(input => input.addEventListener('change', () => {
     const product = input.name.split('-')[0];
     const price = $('.product-price[data-price-for="' + product + '"]');
     const size = $('input[name="' + product + '-size"]:checked').value;
@@ -327,15 +301,15 @@
   $('#year').textContent = String(new Date().getFullYear());
   renderCart();
 
-  // Progressive enhancement: these actions manipulate the same visible draft as the UI.
-  // They never transmit a request, make a payment, or confirm an order.
+  // Optional page tools can inspect or edit the visible order draft.
+  // They never send an order or payment.
   const context = document.modelContext;
   if (context?.registerTool) {
     const lifecycle = new AbortController();
     const toolDefinitions = [
       {
-        name: 'get_snack_order', title: 'Read current snack request',
-        description: 'Read the snack catalogue and the current on-page order request. No order is sent.',
+        name: 'get_snack_order', title: 'Read current snack order',
+        description: 'Read the snack catalogue and the current on-page order draft. No order is sent.',
         inputSchema: { type: 'object', properties: {}, additionalProperties: false },
         annotations: { readOnlyHint: true, untrustedContentHint: false },
         execute(input) {
@@ -344,9 +318,9 @@
         }
       },
       {
-        name: 'add_snacks_to_request', title: 'Add snacks to a draft request',
-        description: 'Add one or more snack selections to the visible on-page draft and open the order panel. Does not send or confirm an order.',
-        inputSchema: { type: 'object', properties: { items: { type: 'array', minItems: 1, maxItems: 20, items: { type: 'object', properties: { product: { type: 'string', enum: ['vanilla', 'strawberry', 'corn'] }, size: { type: 'string', enum: [...SIZES, 'Pack size to confirm'] }, quantity: { type: 'integer', minimum: 1, maximum: 99 } }, required: ['product', 'size', 'quantity'], additionalProperties: false } } }, required: ['items'], additionalProperties: false },
+        name: 'add_snacks_to_order', title: 'Add snacks to an order',
+        description: 'Add one or more snack selections to the visible on-page order draft and open the order panel. Does not send an order.',
+        inputSchema: { type: 'object', properties: { items: { type: 'array', minItems: 1, maxItems: 20, items: { type: 'object', properties: { product: { type: 'string', enum: ['vanilla', 'strawberry', 'chocolate', 'lemon', 'corn'] }, size: { type: 'string', enum: [...SIZES, 'Pack size to confirm'] }, quantity: { type: 'integer', minimum: 1, maximum: 99 } }, required: ['product', 'size', 'quantity'], additionalProperties: false } } }, required: ['items'], additionalProperties: false },
         annotations: { readOnlyHint: false, untrustedContentHint: false },
         execute(input) {
           if (!input || typeof input !== 'object' || Array.isArray(input) || Object.keys(input).some(key => key !== 'items')) throw new Error('Provide an items array.');
